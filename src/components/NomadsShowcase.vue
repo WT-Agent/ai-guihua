@@ -2,8 +2,8 @@
   <section class="nomads-showcase-section">
     <div class="showcase-header">
       <div class="header-left">
-        <h2 class="showcase-title">实战案例与规划模板库</h2>
-        <p class="showcase-subtitle">精选高频职业与学业发展场景，点击“一键套用”快速精准测评</p>
+        <h2 class="showcase-title">实战案例与模板库 (Nomads Showcase)</h2>
+        <p class="showcase-subtitle">精选高频实战场景，点击“一键套用”快速生成高质量结果</p>
       </div>
       <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个实战模板</span>
     </div>
@@ -41,8 +41,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+const props = defineProps<{
+  appTitle?: string;
+  isImage?: boolean;
+}>();
+
 const emit = defineEmits<{
-  (e: 'apply-template', payload: { prompt: string; planningType?: string; stageGoal?: string; industryField?: string }): void;
+  (e: 'apply-template', payload: { prompt: string; style?: string }): void;
 }>();
 
 export interface ShowcaseItem {
@@ -50,81 +55,105 @@ export interface ShowcaseItem {
   tag: string;
   title: string;
   prompt: string;
-  planningType: string;
-  stageGoal: string;
-  industryField: string;
+  style?: string;
   usageCount: string;
 }
 
-const showcaseItems = computed<ShowcaseItem[]>(() => [
-  {
-    id: 'plan-1',
-    tag: '职场跳槽',
-    title: '互联网大厂3年P6升P7瓶颈破解',
-    prompt: '本人目前在电商大厂任职资深后端开发3年，面临技术业务瓶颈与绩效考核压力，希望评估跳槽中厂架构师或留在原大厂转做AI大模型工程化的路径与SWOT。',
-    planningType: '职场3-5年瓶颈与转型跳槽',
-    stageGoal: '资深骨干转型',
-    industryField: '互联网科技',
-    usageCount: '32.8k'
-  },
-  {
-    id: 'plan-2',
-    tag: '高考选报',
-    title: '高考理科580分专业选报与大学规划',
-    prompt: '预估高考580分，理科生，对人工智能与自动化感兴趣，希望评估计算机科学、智能制造与电子信息工程的未来就职前景与院校填报梯队策略。',
-    planningType: '高考志愿与大学专业选择',
-    stageGoal: '高考选报',
-    industryField: '互联网科技',
-    usageCount: '28.4k'
-  },
-  {
-    id: 'plan-3',
-    tag: '考研备考',
-    title: '计算机专业考研与校招两手准备规划',
-    prompt: '软件工程大三学生，GPA前30%，犹豫冲刺985名校计算机专硕还是全力备战秋招互联网大厂，希望能有时间节点拆解与风险应对预案。',
-    planningType: '考研与出国留学路径规划',
-    stageGoal: '考研冲刺',
-    industryField: '互联网科技',
-    usageCount: '45.1k'
-  },
-  {
-    id: 'plan-4',
-    tag: '应届求职',
-    title: '文科双非应届生首份工作避坑指南',
-    prompt: '新闻传播专业应届毕业，拿到新媒体运营与传统媒体记者两个Offer，希望剖析两个岗位的技能提升空间与3年薪资增长路径。',
-    planningType: '毕业求职与首份工作选择',
-    stageGoal: '大学应届生',
-    industryField: '新兴文化传媒',
-    usageCount: '19.7k'
-  },
-  {
-    id: 'plan-5',
-    tag: '跨界转型',
-    title: '传统制造工程师转行数字营销与AI应用',
-    prompt: '机械制造行业从业2年，月薪8k增长乏力，自学了Python与AI文生图工具，希望制定转行数字营销或AI应用方案的技能补强计划。',
-    planningType: '职场3-5年瓶颈与转型跳槽',
-    stageGoal: '初入职场1-3年',
-    industryField: '新兴文化传媒',
-    usageCount: '36.2k'
-  },
-  {
-    id: 'plan-6',
-    tag: '职业危机',
-    title: '35岁职场瓶颈与国企/体制内稳定转型',
-    prompt: '外企35岁中层管理，面对裁员风险与家庭压力，考虑备考事业单位或国企管理岗，需要诊断技能可迁移性与中长期稳定性。',
-    planningType: '职场3-5年瓶颈与转型跳槽',
-    stageGoal: '资深骨干转型',
-    industryField: '体制内公职',
-    usageCount: '22.0k'
+// 模拟实战案例数据库（支持根据文本/图像类及应用主题切换）
+const showcaseItems = computed<ShowcaseItem[]>(() => {
+  if (props.isImage) {
+    return [
+      {
+        id: 'img-1',
+        tag: '写真肖像',
+        title: '商务精英形象照',
+        prompt: '高端写字楼背景，身穿深蓝色西装，眼神自信专注，赛博朋克光影效果',
+        style: '<photography>',
+        usageCount: '18.5k'
+      },
+      {
+        id: 'img-2',
+        tag: '概念插画',
+        title: '未来科幻城市海报',
+        prompt: '霓虹灯光的赛博朋克立体城市，飞行汽车，高品质概念插画，8k分辨率',
+        style: '<illustration>',
+        usageCount: '24.1k'
+      },
+      {
+        id: 'img-3',
+        tag: '二次元动漫',
+        title: '日系国潮动漫角色',
+        prompt: '穿着现代汉服的国风少年，手持纸伞，水彩漫感，唯美光感与柔光滤镜',
+        style: '<anime>',
+        usageCount: '15.9k'
+      },
+      {
+        id: 'img-4',
+        tag: '水彩艺术',
+        title: '治愈系自然风景画',
+        prompt: '晨雾中的森林湖泊，阳光穿透树林，水彩渐变质感，温馨治愈风格',
+        style: '<watercolor>',
+        usageCount: '12.3k'
+      }
+    ];
+  } else {
+    return [
+      {
+        id: 'text-1',
+        tag: '职场总结',
+        title: '周报 OKR 成果提炼',
+        prompt: '本周完成了核心模块优化与线上异常排查，请帮我梳理为具备量化指标的 OKR 汇报文案',
+        style: '专业干练，结果导向',
+        usageCount: '32.8k'
+      },
+      {
+        id: 'text-2',
+        tag: '高情商沟通',
+        title: '拒绝不合理加班话术',
+        prompt: '领导在周末突然布置非紧急任务，如何高情商、委婉且有理有据地推迟到工作日处理？',
+        style: '高情商，委婉，有情调',
+        usageCount: '28.4k'
+      },
+      {
+        id: 'text-3',
+        tag: '短视频文案',
+        title: '知识干货吸睛开头',
+        prompt: '准备制作一条关于高效学习法的短视频，设计 3 个能在前 3 秒留住用户的爆款口播开头',
+        style: '专业干练，结果导向',
+        usageCount: '45.1k'
+      },
+      {
+        id: 'text-4',
+        tag: '商务公文',
+        title: '跨部门协同申请函',
+        prompt: '因项目上线需要研发部门配合联调，撰写一份正式、严谨且明确时间节点的协同申请书',
+        style: '专业干练，结果导向',
+        usageCount: '19.7k'
+      },
+      {
+        id: 'text-5',
+        tag: '小红书种草',
+        title: '实战干货笔记排版',
+        prompt: '分享 5 个提升日常工作效率的文字工具，语言亲切，搭配吸引人的标题与 Emoji 排版',
+        style: '高情商，委婉，有情调',
+        usageCount: '36.2k'
+      },
+      {
+        id: 'text-6',
+        tag: '学术润色',
+        title: '论文摘要与结论重构',
+        prompt: '将以下粗糙的研究结论重写为学术规范、逻辑严密且无语法语病的论文摘要总结',
+        style: '专业干练，结果导向',
+        usageCount: '22.0k'
+      }
+    ];
   }
-]);
+});
 
 function applyTemplate(item: ShowcaseItem) {
   emit('apply-template', {
     prompt: item.prompt,
-    planningType: item.planningType,
-    stageGoal: item.stageGoal,
-    industryField: item.industryField
+    style: item.style
   });
 }
 </script>

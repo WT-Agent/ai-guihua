@@ -1,15 +1,11 @@
 <template>
-  <NomadsShowcase @apply-template="handleApply" />
+  <NomadsShowcase @apply-template="$emit('use-sample', $event.prompt, $event.prompt)" />
 </template>
 
 <script setup lang="ts">
 import NomadsShowcase from './NomadsShowcase.vue';
 
-const emit = defineEmits<{
-  (e: 'apply-template', payload: any): void;
+defineEmits<{
+  (e: 'use-sample', sampleTopic: string, sampleDestination: string): void;
 }>();
-
-function handleApply(payload: any) {
-  emit('apply-template', payload);
-}
 </script>
